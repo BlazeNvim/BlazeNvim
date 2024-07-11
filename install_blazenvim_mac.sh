@@ -62,8 +62,9 @@ apply_config() {
 
     # Clone the BlazeNvim config repository
     TEMP_DIR=$(mktemp -d)
-    git clone https://github.com/BlazeNvim/config.git "$TEMP_DIR"
-    
+    curl -L -o "$TEMP_DIR/blazenvim.zip" "https://github.com/BlazeNvim/BlazeNvim/releases/latest/download/blazenvim.zip"
+    unzip "$TEMP_DIR/blazenvim.zip" -d "$TEMP_DIR"
+
     # Copy the Neovim config to the correct location
     cp -r "$TEMP_DIR/nvim" "$CONFIG_DIR"
 
