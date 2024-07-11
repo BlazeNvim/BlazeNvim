@@ -12,6 +12,32 @@ install_homebrew() {
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
+# Function to install prerequisites
+install_prerequisites() {
+    echo "Installing prerequisites..."
+
+    # Check and install git
+    if command -v git >/dev/null 2>&1; then
+        echo "git is already installed."
+    else
+        brew install git
+    fi
+
+    # Check and install node@20
+    if command -v node >/dev/null 2>&1 && [[ $(node -v) == v20* ]]; then
+        echo "node@20 is already installed."
+    else
+        brew install node@20
+    fi
+
+    # Check and install ripgrep
+    if command -v rg >/dev/null 2>&1; then
+        echo "ripgrep is already installed."
+    else
+        brew install ripgrep
+    fi
+}
+
 # Function to install Neovim
 install_neovim() {
     echo "Installing Neovim..."
@@ -53,7 +79,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
         install_xcode_cli_tools
         install_homebrew
     fi
-    install_neovim    apply_config
+    
+    install_prerequisites
+    install_neovim
+    apply_config
     echo "BlazeNvim installation completed ✅."
 else
     echo "Installation Failed: Unsupported OS. This script only supports macOS."
